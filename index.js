@@ -11,6 +11,12 @@ const userRoute = require("./routes/userRoute");
 const customerRoute = require("./routes/customerRoute");
 const productRoute = require("./routes/productRoute");
 const supplierRoute = require("./routes/supplierRoute");
+const purchaseOrderRoute = require("./routes/purchaseOrderRoute");
+const discountRoute = require("./routes/discountRoute.js");
+const saleRoute = require("./routes/saleRoute.js");
+const paymentRoute = require("./routes/paymentRoute.js");
+const reportRoute = require("./routes/reportRoute.js");
+
 require("dotenv").config();
 
 const app = express();
@@ -35,7 +41,11 @@ app.use("/api/customers", customerRoute);
 app.use("/api/categories", categoryRoute);
 app.use("/api/products", productRoute);
 app.use("/api/suppliers", supplierRoute);
-
+app.use("/api/purchase-orders", purchaseOrderRoute);
+app.use("/api/discounts", discountRoute);
+app.use("/api/sales", saleRoute);
+app.use("/api/payments", paymentRoute);
+app.use("/api/reports", reportRoute);
 // PORT
 const port = process.env.PORT || 5000;
 

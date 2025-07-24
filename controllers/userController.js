@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { User } = require("../models");
+const { User, Role } = require("../models");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -123,7 +123,10 @@ const getAllUsers = asyncHandler(async (req, res, next) => {
       order: [[sort_by, order_by]],
       offset: parseInt(offset),
       limit: parseInt(limit),
-      include: "role",
+      include: {
+        model: Role,
+        as: "role",
+      },
     });
     if (!users || users.length === 0) {
       return res.status(404).json({
@@ -162,7 +165,12 @@ const getUserById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   try {
     const user = await User.findByPk(id, {
-      include: ["role"],
+      include: [
+        {
+          model: Role,
+          as: "role",
+        },
+      ],
     });
     if (!user) {
       return res.status(404).json({

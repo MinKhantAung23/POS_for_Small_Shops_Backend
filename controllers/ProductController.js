@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { Product } = require("../models");
+const { Product, Category, User } = require("../models");
 const { nanoid } = require("nanoid");
 const { Op } = require("sequelize");
 
@@ -92,7 +92,13 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
       order: [[sort_by, order_by]],
       offset: parseInt(offset),
       limit: parseInt(limit),
-      include: ["category", "createdBy"],
+      include: [
+        { model: Category, as: "category" },
+        {
+          model: User,
+          as: "createdBy",
+        },
+      ],
     });
     if (!products || products.length === 0) {
       return res.status(404).json({
@@ -131,7 +137,16 @@ const getProductById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   try {
     const product = await Product.findByPk(id, {
-      include: ["category", "createdBy"],
+      include: [
+        {
+          model: Category,
+          as: "category",
+        },
+        {
+          model: User,
+          as: "createdBy",
+        },
+      ],
     });
     if (!product) {
       return res.status(404).json({
@@ -170,7 +185,13 @@ const updateProduct = asyncHandler(async (req, res, next) => {
   } = req.body;
   try {
     const product = await Product.findByPk(id, {
-      include: ["category", "createdBy"],
+      include: [
+        { model: Category, as: "category" },
+        {
+          model: User,
+          as: "createdBy",
+        },
+      ],
     });
     if (!product) {
       return res.status(404).json({
